@@ -47,6 +47,8 @@ from data_loader.augmentation import ToTensorTest
 
 from models.networks import FastSurferCNN
 
+from pathlib import Path
+
 HELPTEXT = """
 Script to generate aparc.DKTatlas+aseg.deep.mgz using Deep Learning. \n
 
@@ -464,18 +466,17 @@ if __name__ == "__main__":
         with open(options.i_txt) as f:
             fnames = [line.rstrip() for line in f]
 
-        import pdb; pdb.set_trace()
 
         for sub in fnames:
-            invol = None
-            save_file_name = None
-            conformed_img_filename = None
-            use_cuda = None
-            small_gpu = None
-            logger = None
+            logger.info("**************************")
+            logger.info("Running Fast Surfer on {}".format(sub))
+            sub_path = Path(sub)
+            sub_name = sub_path.parents[2].name
+            save_file_name = options.output + sub_name + "_fastsurfer.nii"
+            conformed_img_filename = options.output + sub_name + "_conformed.nii"
 
 
-            fastsurfercnn(invol, save_file_name, conformed_img_filename, use_cuda, small_gpu, logger, options)
+            fastsurfercnn(sub, save_file_name, conformed_img_filename, use_cuda, small_gpu, logger, options)
 
     elif options.simple_run:
 
